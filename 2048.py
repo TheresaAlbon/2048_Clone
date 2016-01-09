@@ -15,6 +15,9 @@ class GameBoard(GridLayout):
         super(GameBoard, self).__init__(**kwargs)
         self.cols = 4
         self.rows = 4
+        
+        # Create the 2D array to store the board
+        self.game_board = [[0 for x in range(4)] for x in range(4)]
 
         # Add the grid of blocks (first row)
         self.c11 = Label(text='11')
@@ -62,6 +65,9 @@ class GameBoard(GridLayout):
             pass
         self._keyboard.bind(on_key_down=self._on_keyboard_down)
 
+        # Update the board
+        self._update_board()
+
     # Function for releasing the keyboard
     def _keyboard_closed(self):
         
@@ -81,6 +87,37 @@ class GameBoard(GridLayout):
         
         # Return True to accept the key. Otherwise, it will be used by the system.
         return True
+
+    # Function for initializing the game board
+    def _initialize_board(self):
+        return
+
+    # Function for updating the game board
+    def _update_board(self):
+
+        # Update the first row
+        self.c11.text=str(self.game_board[0][0])
+        self.c12.text=str(self.game_board[0][1])
+        self.c13.text=str(self.game_board[0][2])
+        self.c14.text=str(self.game_board[0][3])
+        
+        # Update the second row
+        self.c21.text=str(self.game_board[1][0])
+        self.c22.text=str(self.game_board[1][1])
+        self.c23.text=str(self.game_board[1][2])
+        self.c24.text=str(self.game_board[1][3])
+        
+        # Update the third row
+        self.c31.text=str(self.game_board[2][0])
+        self.c32.text=str(self.game_board[2][1])
+        self.c33.text=str(self.game_board[2][2])
+        self.c34.text=str(self.game_board[2][3])
+        
+        # Update the fourth row
+        self.c41.text=str(self.game_board[3][0])
+        self.c42.text=str(self.game_board[3][1])
+        self.c43.text=str(self.game_board[3][2])
+        self.c44.text=str(self.game_board[3][3])
 
 class Run2048(App):
     
