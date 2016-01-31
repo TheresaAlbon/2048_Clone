@@ -18,46 +18,15 @@ class GameBoard(GridLayout):
         
         # Create the 2D array to store the board
         self.game_board = [[0 for x in range(4)] for x in range(4)]
-
-        # Add the grid of blocks (first row)
-        self.c11 = Label(text='11')
-        self.add_widget(self.c11)
-        self.c12 = Label(text='12')
-        self.add_widget(self.c12)
-        self.c13 = Label(text='13')
-        self.add_widget(self.c13)
-        self.c14 = Label(text='14')
-        self.add_widget(self.c14)
-
-        # Add the grid of blocks (second row)
-        self.c21 = Label(text='21')
-        self.add_widget(self.c21)
-        self.c22 = Label(text='22')
-        self.add_widget(self.c22)
-        self.c23 = Label(text='23')
-        self.add_widget(self.c23)
-        self.c24 = Label(text='24')
-        self.add_widget(self.c24)
-
-        # Add the grid of blocks (third row)
-        self.c31 = Label(text='31')
-        self.add_widget(self.c31)
-        self.c32 = Label(text='32')
-        self.add_widget(self.c32)
-        self.c33 = Label(text='33')
-        self.add_widget(self.c33)
-        self.c34 = Label(text='34')
-        self.add_widget(self.c34)
-
-        # Add the grid of blocks (fourth row)
-        self.c41 = Label(text='41')
-        self.add_widget(self.c41)
-        self.c42 = Label(text='42')
-        self.add_widget(self.c42)
-        self.c43 = Label(text='43')
-        self.add_widget(self.c43)
-        self.c44 = Label(text='44')
-        self.add_widget(self.c44)
+        
+        # Add the grid blocks
+        self.display_board = [[0 for x in range(4)] for x in range(4)]
+        for row_ind in range(0,4):
+            
+            for col_ind in range(0,4):
+                
+                self.display_board[row_ind][col_ind] = Label(text='0')
+                self.add_widget(self.display_board[row_ind][col_ind])
 
         # Add the keyboard listener
         self._keyboard = Window.request_keyboard(self._keyboard_closed, self, 'text')
@@ -71,22 +40,40 @@ class GameBoard(GridLayout):
         # Update the board
         self._update_board()
 
-    # Function for releasing the keyboard
+    # -------------------------- Function for releasing the keyboard --------------------------
     def _keyboard_closed(self):
         
         print('My keyboard has been closed!')
         self._keyboard.unbind(on_key_down=self._on_keyboard_down)
         self._keyboard = None
     
-    # Function for listening to the key presses
+    # -------------------------- Function for listening to the key presses --------------------------
     def _on_keyboard_down(self, keyboard, keycode, text, modifiers):
         
         # Keycode is composed of an integer + a string
-        print('The key', keycode, 'have been pressed')
+        #print('The key', keycode, 'have been pressed')
         
         # Update the board if the down arrow is pressed
         if keycode[1] == 'down':
             self._down_move()
+            self._add_new_block()
+            self._update_board()
+        
+        # Update the board if the down arrow is pressed
+        if keycode[1] == 'up':
+            self._up_move()
+            self._add_new_block()
+            self._update_board()
+        
+        # Update the board if the down arrow is pressed
+        if keycode[1] == 'left':
+            self._left_move()
+            self._add_new_block()
+            self._update_board()
+        
+        # Update the board if the down arrow is pressed
+        if keycode[1] == 'right':
+            self._right_move()
             self._add_new_block()
             self._update_board()
         
@@ -97,8 +84,14 @@ class GameBoard(GridLayout):
         # Return True to accept the key. Otherwise, it will be used by the system.
         return True
 
-    # Function for initializing the game board
+    # -------------------------- Function for initializing the game board --------------------------
     def _initialize_board(self):
+        
+        for row_ind in range(0,4):
+            
+            for col_ind in range(0,4):
+        
+                self.game_board[row_ind][col_ind] = 0
         
         row_ind = random.randint(0,3)
         col_ind = random.randint(0,3)
@@ -109,7 +102,7 @@ class GameBoard(GridLayout):
         else:
             self.game_board[row_ind][col_ind] = 4
 
-    # Function for adding new block
+    # -------------------------- Function for adding new block --------------------------
     def _add_new_block(self):
     
         open_space = 0
@@ -130,34 +123,16 @@ class GameBoard(GridLayout):
         else:
             self.game_board[row_ind][col_ind] = 4
 
-    # Function for updating the game board
+    # -------------------------- Function for updating the game board --------------------------
     def _update_board(self):
+        
+        for row_ind in range(0,4):
+            
+            for col_ind in range(0,4):
+                
+                self.display_board[row_ind][col_ind].text = str(self.game_board[row_ind][col_ind])
 
-        # Update the first row
-        self.c11.text=str(self.game_board[0][0])
-        self.c12.text=str(self.game_board[0][1])
-        self.c13.text=str(self.game_board[0][2])
-        self.c14.text=str(self.game_board[0][3])
-        
-        # Update the second row
-        self.c21.text=str(self.game_board[1][0])
-        self.c22.text=str(self.game_board[1][1])
-        self.c23.text=str(self.game_board[1][2])
-        self.c24.text=str(self.game_board[1][3])
-        
-        # Update the third row
-        self.c31.text=str(self.game_board[2][0])
-        self.c32.text=str(self.game_board[2][1])
-        self.c33.text=str(self.game_board[2][2])
-        self.c34.text=str(self.game_board[2][3])
-        
-        # Update the fourth row
-        self.c41.text=str(self.game_board[3][0])
-        self.c42.text=str(self.game_board[3][1])
-        self.c43.text=str(self.game_board[3][2])
-        self.c44.text=str(self.game_board[3][3])
-
-    # Function for calculating down move
+    # -------------------------- Function for calculating down move --------------------------
     def _down_move(self):
         
         # Create the 2D array to store the board
@@ -194,6 +169,123 @@ class GameBoard(GridLayout):
 
                 row_ind_cond = row_ind_cond - 1
 
+        self.game_board = new_game_board
+                
+    # -------------------------- Function for calculating right move --------------------------
+    def _right_move(self):
+        
+        # Create the 2D array to store the board
+        new_game_board = [[0 for x in range(4)] for x in range(4)]
+        
+        # Move the rows down
+        for col_ind in range(0,4):
+            
+            temp_ind = 3;
+            
+            for row_ind in range(3,-1,-1):
+                
+                if self.game_board[col_ind][row_ind] != 0:
+                    
+                    new_game_board[col_ind][temp_ind] = self.game_board[col_ind][row_ind]
+                    temp_ind = temp_ind - 1
+        
+        # Combine like blocks
+        for col_ind in range(0,4):
+            
+            row_ind_cond = 3
+            
+            while row_ind_cond != 0:
+                
+                if new_game_board[col_ind][row_ind_cond] == new_game_board[col_ind][row_ind_cond-1]:
+                    
+                    new_game_board[col_ind][row_ind_cond] = 2*new_game_board[col_ind][row_ind_cond-1]
+                    
+                    for row_ind in range(row_ind_cond-1,0,-1):
+                        
+                        new_game_board[col_ind][row_ind] = new_game_board[col_ind][row_ind-1]
+                    
+                    new_game_board[col_ind][0] = 0
+                
+                row_ind_cond = row_ind_cond - 1
+        
+        self.game_board = new_game_board
+
+    # -------------------------- Function for calculating up move --------------------------
+    def _up_move(self):
+    
+        # Create the 2D array to store the board
+        new_game_board = [[0 for x in range(4)] for x in range(4)]
+        
+        # Move the rows down
+        for col_ind in range(0,4):
+            
+            temp_ind = 0;
+            
+            for row_ind in range(0,4):
+                
+                if self.game_board[row_ind][col_ind] != 0:
+                    
+                    new_game_board[temp_ind][col_ind] = self.game_board[row_ind][col_ind]
+                    temp_ind = temp_ind + 1
+    
+        # Combine like blocks
+        for col_ind in range(0,4):
+            
+            row_ind_cond = 0
+            
+            while row_ind_cond != 3:
+                
+                if new_game_board[row_ind_cond][col_ind] == new_game_board[row_ind_cond+1][col_ind]:
+                    
+                    new_game_board[row_ind_cond][col_ind] = 2*new_game_board[row_ind_cond+1][col_ind]
+                    
+                    for row_ind in range(row_ind_cond+1,3):
+                        
+                        new_game_board[row_ind][col_ind] = new_game_board[row_ind+1][col_ind]
+                    
+                    new_game_board[3][col_ind] = 0
+                
+                row_ind_cond = row_ind_cond + 1
+        
+        self.game_board = new_game_board
+
+    # -------------------------- Function for calculating left move --------------------------
+    def _left_move(self):
+    
+        # Create the 2D array to store the board
+        new_game_board = [[0 for x in range(4)] for x in range(4)]
+        
+        # Move the rows down
+        for col_ind in range(0,4):
+            
+            temp_ind = 0;
+            
+            for row_ind in range(0,4):
+                
+                if self.game_board[col_ind][row_ind] != 0:
+                    
+                    new_game_board[col_ind][temp_ind] = self.game_board[col_ind][row_ind]
+                    temp_ind = temp_ind + 1
+    
+        # Combine like blocks
+        for col_ind in range(0,4):
+        
+            row_ind_cond = 0
+            
+            while row_ind_cond != 3:
+                
+                if new_game_board[col_ind][row_ind_cond] == new_game_board[col_ind][row_ind_cond+1]:
+                    
+                    new_game_board[col_ind][row_ind_cond] = 2*new_game_board[col_ind][row_ind_cond+1]
+                    
+                    for row_ind in range(row_ind_cond+1,3):
+                        
+                        new_game_board[col_ind][row_ind] = new_game_board[col_ind][row_ind+1]
+                    
+                    new_game_board[col_ind][3] = 0
+                
+                row_ind_cond = row_ind_cond + 1
+    
         self.game_board = new_game_board
 
 class Run2048(App):
