@@ -25,7 +25,7 @@ class GameBoard(GridLayout):
             
             for col_ind in range(0,4):
                 
-                self.display_board[row_ind][col_ind] = Label(text='0')
+                self.display_board[row_ind][col_ind] = Label(text='0',text_size=(None, None))
                 self.add_widget(self.display_board[row_ind][col_ind])
 
         # Add the keyboard listener
@@ -130,7 +130,10 @@ class GameBoard(GridLayout):
             
             for col_ind in range(0,4):
                 
-                self.display_board[row_ind][col_ind].text = str(self.game_board[row_ind][col_ind])
+                if self.game_board[row_ind][col_ind] == 0:
+                    self.display_board[row_ind][col_ind].text = ' '
+                else:
+                    self.display_board[row_ind][col_ind].text = str(self.game_board[row_ind][col_ind])
 
     # -------------------------- Function for calculating down move --------------------------
     def _down_move(self):
