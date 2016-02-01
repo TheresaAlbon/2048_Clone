@@ -19,6 +19,9 @@ class GameBoard(GridLayout):
         # Create the 2D array to store the board
         self.game_board = [[0 for x in range(4)] for x in range(4)]
         
+        # Create the previous game board
+        self.previous_game_board = [[0 for x in range(4)] for x in range(4)]
+        
         # Add the grid blocks
         self.display_board = [[0 for x in range(4)] for x in range(4)]
         for row_ind in range(0,4):
@@ -55,26 +58,39 @@ class GameBoard(GridLayout):
         
         # Update the board if the down arrow is pressed
         if keycode[1] == 'down':
+            self.previous_game_board = self.game_board
             self._down_move()
-            self._add_new_block()
+            if self._board_changed():
+                self._add_new_block()
             self._update_board()
         
-        # Update the board if the down arrow is pressed
+        # Update the board if the up arrow is pressed
         if keycode[1] == 'up':
+            self.previous_game_board = self.game_board
             self._up_move()
-            self._add_new_block()
+            if self._board_changed():
+                self._add_new_block()
             self._update_board()
         
-        # Update the board if the down arrow is pressed
+        # Update the board if the left arrow is pressed
         if keycode[1] == 'left':
+            self.previous_game_board = self.game_board
             self._left_move()
-            self._add_new_block()
+            if self._board_changed():
+                self._add_new_block()
             self._update_board()
         
-        # Update the board if the down arrow is pressed
+        # Update the board if the right arrow is pressed
         if keycode[1] == 'right':
+            self.previous_game_board = self.game_board
             self._right_move()
-            self._add_new_block()
+            if self._board_changed():
+                self._add_new_block()
+            self._update_board()
+            
+        # Start a new game if the 'n' key is pressed
+        if keycode[1] == 'n':
+            self._initialize_board()
             self._update_board()
         
         # If we hit escape, release the keyboard
@@ -290,6 +306,22 @@ class GameBoard(GridLayout):
                 row_ind_cond = row_ind_cond + 1
     
         self.game_board = new_game_board
+
+    # -------------------------- Function for checking if the board has changed --------------------------
+    def _board_changed(self):
+
+        changed = 0
+
+        for col_ind in range(0,4):
+        
+            for row_ind in range(0,4):
+
+                if self.previous_game_board[row_ind][col_ind] != self.game_board[row_ind][col_ind]:
+
+                    changed = 1
+
+        return changed
+
 
 class Run2048(App):
     
